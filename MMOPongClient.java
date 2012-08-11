@@ -8,8 +8,13 @@ import java.util.*;
 class MMOPongClient extends Frame 
         implements ConnectionListener, WindowListener, KeyListener {
     
+    static String title = "MMO Pong v1.0";
+    ConnectionHandler remote = null;
+    
     public static void main(String[] args) {
         String host;
+        
+        System.out.println("==== " + title + " ====");
         
         try {
             host = args[0];
@@ -25,7 +30,20 @@ class MMOPongClient extends Frame
     }
     
     MMOPongClient(String host) {
-        // Build client here
+        super(title);
+        try {
+            Socket remote_socket = new Socket(host, 13428);
+            remote = new ConnectionHandler(remote_socket, this);
+            remote.start();   // Don't forget to start your Thread!!
+        }
+        catch(UnknownHostException e) {
+            System.out.println("Could not find host " + host + 
+                    ".");
+        }
+        catch(IOException e) {
+            System.out.println("Could not connect to host " + host + 
+                    ".");
+        }
     }
     
     public void add_connection(ConnectionHandler ch) {}
@@ -55,12 +73,14 @@ class MMOPongClient extends Frame
         char c = e.getKeyChar();
         
         // Could use switch-case here, but this works well enough
-        
+        // There are left-handed controls (ef) and right-handed controls (ih)
         if (c == 'e' || c == 'i') {
-            // Send 'move up' signal
+            // up
+            remote.send_message("u");
         }
         if (c == 'f' || c == 'h') {
-            // Send 'move down' signal
+            // down
+            remote.send_message("d");
         }
     }
 }

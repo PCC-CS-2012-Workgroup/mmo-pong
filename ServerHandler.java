@@ -11,7 +11,7 @@ public class ServerHandler extends Thread {
 
     ServerHandler(ConnectionListener c) {
         try {
-            ss  = new ServerSocket(8989);
+            ss  = new ServerSocket(13428);
             cl = c;
         }
         catch(Exception e) {

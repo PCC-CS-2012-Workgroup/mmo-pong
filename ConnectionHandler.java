@@ -40,7 +40,7 @@ public class ConnectionHandler extends Thread {
         }
     }
 
-    public void sendmessage(String s) {
+    public void send_message(String s) {
         writesocket.println(s);
     }
 }
